@@ -38,7 +38,8 @@ Updated code:
 <button
   class="close-popup-button"
   title="close popup button"
-  aria-label="close popup button">
+  aria-label="close popup button"
+>
   <i class="fa-solid fa-xmark"></i>
 </button>
 ```

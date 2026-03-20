@@ -11,8 +11,9 @@ const closePopupButtons = document.querySelectorAll(".close-popup-button");
 
 for (const closePopupButton of closePopupButtons) {
   closePopupButton.addEventListener("click", (event) => {
-    console.log(event.target);
-    const popupSection = event.currentTarget.parentElement.parentElement.parentElement;
+    //console.log(event.target);
+    const popupSection =
+      event.currentTarget.parentElement.parentElement.parentElement;
     popupSection.style.display = "none";
   });
 }

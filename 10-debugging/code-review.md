@@ -42,7 +42,7 @@ Updated code:
 
 ### Issue #3: Heading Hierarchy
 
-The page uses multiple top-level h1 headings instead of a clear heading hierarchy. Since “Scottish Fold” is the main page heading, the other major section headings should be h2 elements. This improves semantic structure and accessibility because assistive technologies rely on heading levels to understand page organization.
+The page uses multiple top-level h1 headings instead of a clear heading hierarchy. Since “Scottish Fold” is the main page heading, the other major section headings should be h2 elements. This improves semantic structure and accessibility because they (screen readers) rely on heading levels to understand page organization.
 
 Initial code:
 
@@ -82,7 +82,7 @@ Updated code:
 
 ### Issue #4: Cat Facts is not using list
 
-The page uses multiple top-level h1 headings instead of a clear heading hierarchy. Since “Scottish Fold” is the main page heading, the other major section headings should be h2 elements. This improves semantic structure and accessibility because assistive technologies rely on heading levels to understand page organization.
+The Cat Facts section is a list, but it is built using paragraphs and decorative bullet spans instead of a real unordered list. This is a semantic and accessibility issue because screen readers and browsers expect grouped list content to use `<ul>` and `<li>`.
 
 Initial code:
 
@@ -135,8 +135,165 @@ Updated code:
   <li>They're the only folded-ear cats that can show</li>
   <li>They're T-Swift approved</li>
 </ul>
-Removed in style.css .cat-fact-list-item { display: flex; align-items: center; }
-.bullet-point { display: block; background-color: black; height: 6px; width:
-6px; border-radius: 50%; margin-right: 10px; margin-left: 2em; } Added
-.cat-fact-list { padding-left: 2rem; }
 ```
+
+Removed from `style.css`:
+
+```css
+.cat-fact-list-item {
+  display: flex;
+  align-items: center;
+}
+
+.bullet-point {
+  display: block;
+  background-color: black;
+  height: 6px;
+  width: 6px;
+  border-radius: 50%;
+  margin-right: 10px;
+  margin-left: 2em;
+}
+```
+
+Added in `style.css`:
+
+```css
+.cat-fact-list {
+  padding-left: 2rem;
+}
+```
+
+### Issue #5: Submit & reset button are not inside the `<form>`
+
+The submit and reset buttons are outside the closing `</form>` tag. This is an issue because the buttons outside the form are not associated with the form by default, so they will not submit or reset the form.
+
+Initial code:
+
+```html
+</form>
+<div
+  class="form space-evenly-distributed-row-container form-buttons-container"
+>
+  <input class="form-button" type="submit" value="submit" />
+  <input class="form-button" type="reset" value="reset" />
+</div>
+```
+
+Updated code: Move the `</form>`
+
+```html
+<div
+  class="form space-evenly-distributed-row-container form-buttons-container"
+>
+  <input class="form-button" type="submit" value="submit" />
+  <input class="form-button" type="reset" value="reset" />
+</div>
+</form>
+```
+
+### Issue #6: Form doesn't use proper labels
+
+The text inputs use `<span>` elements and `aria-label` attributes instead of proper `<label>` elements. This causes an accessibility issue. Using the correct element `<label>` with `for` and `id` improves usability, especally for accessibility.
+Also `<p>` should not wrap form elements like inputs, so changing `<p>` to `<div>` will help fix that issue.
+
+Initial code:
+
+```html
+<p class="label-input-group form-element-container">
+  <span class="form-label">Name</span>
+  <input
+    aria-label="name"
+    class="form-input-box"
+    type="text"
+    id="name"
+    name="name"
+  />
+</p>
+
+<p class="label-input-group form-element-container">
+  <span class="form-label">Username</span>
+  <input
+    aria-label="username"
+    class="form-input-box"
+    type="text"
+    id="username"
+    name="username"
+  />
+</p>
+
+<p class="label-input-group form-element-container">
+  <span class="form-label">Email</span>
+  <input
+    aria-label="email"
+    class="form-input-box"
+    type="email"
+    id="email"
+    name="email"
+  />
+</p>
+
+<p class="label-input-group form-element-container">
+  <span class="form-label">Phone Number</span>
+  <input
+    aria-label="phone"
+    class="form-input-box"
+    type="tel"
+    id="phone-number"
+    name="phone-number"
+  />
+</p>
+```
+
+Updated code:
+
+```html
+<div class="label-input-group form-element-container">
+  <label class="form-label" for="name">Name</label>
+  <input class="form-input-box" type="text" id="name" name="name" />
+</div>
+
+<div class="label-input-group form-element-container">
+  <label class="form-label" for="username">Username</label>
+  <input class="form-input-box" type="text" id="username" name="username" />
+</div>
+
+<div class="label-input-group form-element-container">
+  <label class="form-label" for="email">Email</label>
+  <input class="form-input-box" type="email" id="email" name="email" />
+</div>
+
+<div class="label-input-group form-element-container">
+  <label class="form-label" for="phone-number">Phone Number</label>
+  <input
+    class="form-input-box"
+    type="tel"
+    id="phone-number"
+    name="phone-number"
+  />
+</div>
+```
+
+### Issue 7: Checkbox group missing `<fieldset>` & `<legend>`
+
+The breed options are a related group of checkboxes, but they are not marked up with a real `<fieldset>` and `<legend>`. Without it, screen readers are not able to accurately group and label the related inputs.
+
+Initial code:
+
+```html
+<div class="form-fieldset form-element-container">
+  <p class="form-label">What breeds would you like to learn?</p>
+</div>
+```
+
+Updated code:
+
+```html
+<fieldset class="form-fieldset form-element-container">
+  <legend class="form-label">What breeds would you like to learn?</legend>
+</fieldset>
+```
+
+### Issue 8: Missing main landmark
+
+When running the accessibility on lighthouse, it showed that the page doesn't have a `<main>` landmark. This is important to have because screen reader users rely on landmarks like header, main, and footer to navigate around the page. So, `<main>` was added right after `</header>` and right above `<footer class="footer">`.
